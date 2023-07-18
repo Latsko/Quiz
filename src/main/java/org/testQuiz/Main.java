@@ -1,7 +1,7 @@
-package org.example;
+package org.testQuiz;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        new Quiz("Test quiz");
     }
 }
