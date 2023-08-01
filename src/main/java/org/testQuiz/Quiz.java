@@ -5,17 +5,19 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Quiz extends JFrame implements ActionListener{
+public class Quiz extends JFrame implements ActionListener {
     private final JLabel questionLabel;
     private final JLabel greetingLabel;
     private final JLabel timerLabel;
+    private final JPanel progressPanel;
     private final JPanel testPanel;
     private final JPanel timerPanel;
-    private final Timer timer;
     private final JButton startButton, btnNext, btnResult;
     private final JRadioButton[] radioButtons = new JRadioButton[5];
     private final ButtonGroup buttonGroup;
-    private int countCorrect, current;
+    private final Timer timer;
+    private final JProgressBar progressBar;
+    private int countCorrect, current, progressValue;
 
     Quiz(String s) {
         super(s);
@@ -24,18 +26,22 @@ public class Quiz extends JFrame implements ActionListener{
         setLayout(null);
         setLocation(250, 100);
         setVisible(true);
-        setSize(1016, 500);
+        setSize(1016, 590);
         getContentPane().setBackground(Color.DARK_GRAY);
+
+        progressPanel = new JPanel();
+        progressBar = new JProgressBar();
 
         testPanel = new JPanel();
         timerPanel = new JPanel();
 
+        greetingLabel = new JLabel("Hello! Please press start, to begin quiz.");
         questionLabel = new JLabel();
         timerLabel = new JLabel("Timer");
-        greetingLabel  = new JLabel ("Hello! Please press start, to begin quiz.");
 
         setPanels();
         setLabels();
+        setProgressBar();
 
         // initialize timer and show in timerLabel
         timer = new MyTimer().getTimer(timerLabel);
@@ -99,6 +105,21 @@ public class Quiz extends JFrame implements ActionListener{
         }
     }
 
+    private void setProgressBar() {
+        // progress bar
+        progressPanel.setLayout(null);
+        progressPanel.setBounds(0, 500, 1000, 50);
+        progressPanel.setOpaque(true);
+        progressPanel.setBackground(Color.green);
+        add(progressPanel);
+        progressPanel.setVisible(true);
+
+        progressBar.setValue(0);
+        progressBar.setBounds(250, 15, 500, 20);
+        progressPanel.add(progressBar);
+        progressBar.setVisible(false);
+    }
+
     private void setButtons() {
         // start button
         startButton.setBounds(50, 200, 100, 30);
@@ -150,6 +171,7 @@ public class Quiz extends JFrame implements ActionListener{
 
         // question label
         questionLabel.setBounds(100, 20, 600, 150);
+        questionLabel.setHorizontalAlignment(JLabel.CENTER);
         questionLabel.setHorizontalTextPosition(JLabel.CENTER);
         questionLabel.setBackground(Color.BLACK);
         questionLabel.setForeground(Color.lightGray);
@@ -218,6 +240,7 @@ public class Quiz extends JFrame implements ActionListener{
             startButton.setVisible(false);
             questionLabel.setVisible(true);
             btnNext.setVisible(true);
+            progressBar.setVisible(true);
             btnNext.setEnabled(true);
             btnResult.setEnabled(true);
             for (int i = 0; i < 4; i++) {
@@ -232,20 +255,20 @@ public class Quiz extends JFrame implements ActionListener{
                 countCorrect++;
             }
             current++;
+            progressBar.setValue(progressValue += Math.ceil(100.0/6));
+            progressBar.setStringPainted(true);
+            progressBar.setString(current + "/" + 6);
             setDataForButtons();
-            if (current == 5) {
+            if (current == 6) {
                 btnNext.setEnabled(false);
                 btnResult.setVisible(true);
             }
         }
 
         if (e.getActionCommand().equals("Result")) {
-            if (checkAns()) {
-                countCorrect++;
-            }
             current++;
             timer.stop();
-            JOptionPane.showMessageDialog(this,  "You have " + countCorrect + " correct answers");
+            JOptionPane.showMessageDialog(this, "You have " + countCorrect + " correct answers");
             System.exit(0);
         }
     }
