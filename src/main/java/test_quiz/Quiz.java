@@ -11,6 +11,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Quiz extends JFrame implements ActionListener {
+        private static final String MAIN_COLOR = "#551fbd";
+    private static final String DARKER_MAIN_COLOR = "#390879";
+    private static final String SECONDARY_COLOR = "#a2eacb";
+    private static final String DARKER_SECONDARY_COLOR = "#2cd9c1";
     private final JLabel questionLabel;
     private final JLabel greetingLabel;
     private final JLabel timerLabel;
@@ -64,7 +68,8 @@ public class Quiz extends JFrame implements ActionListener {
     private void setButtons() {
         // start button
         startButton.setBounds(50, 200, 100, 30);
-        startButton.setBackground(Color.green);
+        startButton.setForeground(Color.decode(MAIN_COLOR));
+        startButton.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
         timerPanel.add(startButton);
         startButton.addActionListener(this);
 
@@ -80,10 +85,16 @@ public class Quiz extends JFrame implements ActionListener {
         // hide result button and add action listener to next and result buttons
         btnResult.setVisible(false);
         btnResult.setEnabled(false);
+        btnResult.setFocusable(false);
+        btnResult.setForeground(Color.decode(SECONDARY_COLOR));
+        btnResult.setBackground(Color.decode(DARKER_MAIN_COLOR));
         btnResult.addActionListener(this);
 
         btnNext.setVisible(false);
         btnNext.setEnabled(false);
+        btnNext.setFocusable(false);
+        btnNext.setForeground(Color.decode(SECONDARY_COLOR));
+        btnNext.setBackground(Color.decode(DARKER_MAIN_COLOR));
         btnNext.addActionListener(this);
 
         testPanel.add(btnNext);
@@ -96,8 +107,13 @@ public class Quiz extends JFrame implements ActionListener {
         //setting buttons bounds
         radioButtons[0].setBounds(100, 200, 200, 50);
         radioButtons[1].setBounds(100, 275, 200, 50);
-        radioButtons[2].setBounds(350, 200, 200, 50);
-        radioButtons[3].setBounds(350, 275, 200, 50);
+        radioButtons[2].setBounds(400, 200, 200, 50);
+        radioButtons[3].setBounds(400, 275, 200, 50);
+        for (int i = 0; i < 4; i++) {
+            radioButtons[i].setFocusable(false);
+            radioButtons[i].setBackground(Color.decode(DARKER_SECONDARY_COLOR));
+            radioButtons[i].setForeground(Color.decode(DARKER_MAIN_COLOR));
+        }
 
         btnNext.setBounds(75, 375, 250, 50);
         btnResult.setBounds(400, 375, 250, 50);
@@ -134,30 +150,32 @@ public class Quiz extends JFrame implements ActionListener {
         progressPanel.setLayout(null);
         progressPanel.setBounds(0, 500, 1000, 50);
         progressPanel.setOpaque(true);
-        progressPanel.setBackground(Color.green);
-        add(progressPanel);
+        progressPanel.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
         progressPanel.setVisible(true);
+        add(progressPanel);
 
         progressBar.setValue(0);
         progressBar.setBounds(250, 15, 500, 20);
-        progressPanel.add(progressBar);
+        progressBar.setBackground(Color.DARK_GRAY);
+        progressBar.setForeground(Color.decode(MAIN_COLOR));
         progressBar.setVisible(false);
+        progressPanel.add(progressBar);
     }
 
     private void setLabels() {
         // greeting label
         greetingLabel.setBounds(100, 150, 600, 150);
         greetingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        greetingLabel.setForeground(Color.BLUE);
-        greetingLabel.setFont(new Font("Arial", Font.ITALIC, 20));
+        greetingLabel.setForeground(Color.decode(SECONDARY_COLOR));
+        greetingLabel.setFont(new Font("Arial", Font.ITALIC, 30));
         greetingLabel.setVisible(true);
 
         // question label
         questionLabel.setBounds(100, 20, 600, 150);
         questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         questionLabel.setHorizontalTextPosition(SwingConstants.CENTER);
-        questionLabel.setBackground(Color.BLACK);
-        questionLabel.setForeground(Color.lightGray);
+        questionLabel.setBackground(Color.DARK_GRAY);
+        questionLabel.setForeground(Color.decode(SECONDARY_COLOR));
         questionLabel.setOpaque(true);
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         questionLabel.setVisible(false);
@@ -165,7 +183,8 @@ public class Quiz extends JFrame implements ActionListener {
         // timer label
         timerLabel.setBounds(50, 75, 100, 100);
         timerLabel.setOpaque(true);
-        timerLabel.setBackground(Color.BLACK);
+        timerLabel.setForeground(Color.decode(MAIN_COLOR));
+        timerLabel.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
         timerLabel.setVerticalAlignment(SwingConstants.CENTER);
         timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
@@ -175,13 +194,13 @@ public class Quiz extends JFrame implements ActionListener {
         add(testPanel);
 
         // test panel
-        testPanel.setBackground(Color.GRAY);
+        testPanel.setBackground(Color.decode(MAIN_COLOR));
         testPanel.setBounds(0, 0, 800, 500);
         testPanel.add(questionLabel);
         testPanel.setLayout(null);
 
         //timer panel
-        timerPanel.setBackground(Color.red);
+        timerPanel.setBackground(Color.decode(DARKER_MAIN_COLOR));
         timerPanel.setBounds(800, 0, 200, 500);
         timerPanel.add(timerLabel);
         timerPanel.setLayout(null);
