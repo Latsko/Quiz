@@ -1,4 +1,4 @@
-package org.testQuiz;
+package test_quiz.entities;
 
 import javax.swing.*;
 

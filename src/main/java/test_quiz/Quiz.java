@@ -1,9 +1,14 @@
-package org.testQuiz;
+package test_quiz;
+
+import test_quiz.entities.MyTimer;
+import test_quiz.entities.Question;
+import test_quiz.entities.services.QuestionService;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Quiz extends JFrame implements ActionListener {
     private final JLabel questionLabel;
@@ -18,11 +23,13 @@ public class Quiz extends JFrame implements ActionListener {
     private final Timer timer;
     private final JProgressBar progressBar;
     private int countCorrect, current, progressValue;
+    private final List<Question> questionList;
 
     Quiz(String s) {
         super(s);
+        this.questionList = new QuestionService().setData();
         // here I set all necessary parameters to my frame
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setLocation(250, 100);
         setVisible(true);
@@ -54,72 +61,6 @@ public class Quiz extends JFrame implements ActionListener {
         setButtons();
     }
 
-    private void setDataForButtons() {
-        radioButtons[4].setSelected(true);
-        radioButtons[4].setVisible(false);
-        if (current == 0) {
-            questionLabel.setText("<HTML>Q1: Which is official language for " +
-                    "Android developers Which is official language for Android developers" +
-                    "Which is official language for Android developersWhich is official language for Android developers" +
-                    "Which is official language for Android developers3</HTML>");
-            radioButtons[0].setText("<HTML>Java how many symbols does it take to be too much for button" +
-                    " not this many obviously</HTML>");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("another text");
-        }
-        if (current == 1) {
-            questionLabel.setText("Q1: Which is official language for Android developers");
-            radioButtons[0].setText("Java");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("JavaScript");
-        }
-        if (current == 2) {
-            questionLabel.setText("Q1: Which is official language for Android developers");
-            radioButtons[0].setText("Java");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("JavaScript");
-        }
-        if (current == 3) {
-            questionLabel.setText("Q1: Which is official language for Android developers");
-            radioButtons[0].setText("Java");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("JavaScript");
-        }
-        if (current == 4) {
-            questionLabel.setText("Q1: Which is official language for Android developers");
-            radioButtons[0].setText("Java");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("JavaScript");
-        }
-        if (current == 5) {
-            questionLabel.setText("Q1: Which is official language for Android developers");
-            radioButtons[0].setText("Java");
-            radioButtons[1].setText("Kotlin");
-            radioButtons[2].setText("C++");
-            radioButtons[3].setText("JavaScript");
-        }
-    }
-
-    private void setProgressBar() {
-        // progress bar
-        progressPanel.setLayout(null);
-        progressPanel.setBounds(0, 500, 1000, 50);
-        progressPanel.setOpaque(true);
-        progressPanel.setBackground(Color.green);
-        add(progressPanel);
-        progressPanel.setVisible(true);
-
-        progressBar.setValue(0);
-        progressBar.setBounds(250, 15, 500, 20);
-        progressPanel.add(progressBar);
-        progressBar.setVisible(false);
-    }
-
     private void setButtons() {
         // start button
         startButton.setBounds(50, 200, 100, 30);
@@ -149,6 +90,7 @@ public class Quiz extends JFrame implements ActionListener {
         testPanel.add(btnResult);
 
         //sets data for radial buttons
+        radioButtons[4].setVisible(false);
         setDataForButtons();
 
         //setting buttons bounds
@@ -161,18 +103,59 @@ public class Quiz extends JFrame implements ActionListener {
         btnResult.setBounds(400, 375, 250, 50);
     }
 
+    private void setDataForButtons() {
+        radioButtons[4].setSelected(true);
+
+        for (int i = 0; i < questionList.size(); i++) {
+            if(current == i) {
+                questionLabel.setText(questionList.get(i).questionContents());
+                for (int j = 0; j < 4; j++) {
+                    radioButtons[j].setText(questionList.get(i).variants().get(j));
+                }
+            }
+        }
+    }
+
+    private boolean checkAns() {
+        for (int i = 0; i < questionList.size(); i++) {
+            if(current == i) {
+                for (int j = 0; j < 4; j++) {
+                    if(radioButtons[j].isSelected()) {
+                        return questionList.get(i).isTrueAnswer(radioButtons[j].getText());
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void setProgressBar() {
+        // progress bar
+        progressPanel.setLayout(null);
+        progressPanel.setBounds(0, 500, 1000, 50);
+        progressPanel.setOpaque(true);
+        progressPanel.setBackground(Color.green);
+        add(progressPanel);
+        progressPanel.setVisible(true);
+
+        progressBar.setValue(0);
+        progressBar.setBounds(250, 15, 500, 20);
+        progressPanel.add(progressBar);
+        progressBar.setVisible(false);
+    }
+
     private void setLabels() {
         // greeting label
         greetingLabel.setBounds(100, 150, 600, 150);
-        greetingLabel.setHorizontalAlignment(JLabel.CENTER);
+        greetingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         greetingLabel.setForeground(Color.BLUE);
         greetingLabel.setFont(new Font("Arial", Font.ITALIC, 20));
         greetingLabel.setVisible(true);
 
         // question label
         questionLabel.setBounds(100, 20, 600, 150);
-        questionLabel.setHorizontalAlignment(JLabel.CENTER);
-        questionLabel.setHorizontalTextPosition(JLabel.CENTER);
+        questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        questionLabel.setHorizontalTextPosition(SwingConstants.CENTER);
         questionLabel.setBackground(Color.BLACK);
         questionLabel.setForeground(Color.lightGray);
         questionLabel.setOpaque(true);
@@ -183,8 +166,8 @@ public class Quiz extends JFrame implements ActionListener {
         timerLabel.setBounds(50, 75, 100, 100);
         timerLabel.setOpaque(true);
         timerLabel.setBackground(Color.BLACK);
-        timerLabel.setVerticalAlignment(JLabel.CENTER);
-        timerLabel.setHorizontalAlignment(JLabel.CENTER);
+        timerLabel.setVerticalAlignment(SwingConstants.CENTER);
+        timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     private void setPanels() {
@@ -205,32 +188,6 @@ public class Quiz extends JFrame implements ActionListener {
 
         //greeting panel
         testPanel.add(greetingLabel);
-    }
-
-    private boolean checkAns() {
-        // here we check which one of the buttons is the right answer simply asking what button was
-        // selected, which means, we are setting right answers here as well, simply assigning
-        //  the radioButtons array an int number containing the wright answer
-        if (current == 0) {
-            return (radioButtons[1]).isSelected();
-        }
-        if (current == 1) {
-            return (radioButtons[1]).isSelected();
-        }
-        if (current == 2) {
-            return (radioButtons[1]).isSelected();
-        }
-        if (current == 3) {
-            return (radioButtons[1]).isSelected();
-        }
-        if (current == 4) {
-            return (radioButtons[1]).isSelected();
-        }
-        if (current == 5) {
-            return (radioButtons[1]).isSelected();
-        }
-
-        return false;
     }
 
     @Override
@@ -255,18 +212,21 @@ public class Quiz extends JFrame implements ActionListener {
                 countCorrect++;
             }
             current++;
-            progressBar.setValue(progressValue += Math.ceil(100.0/6));
+            progressValue = progressValue + (int) Math.ceil(100.0/6);
+            progressBar.setValue(progressValue);
             progressBar.setStringPainted(true);
             progressBar.setString(current + "/" + 6);
             setDataForButtons();
             if (current == 6) {
                 btnNext.setEnabled(false);
                 btnResult.setVisible(true);
+                for (int i = 0; i < 4; i++) {
+                    radioButtons[i].setEnabled(false);
+                }
             }
         }
 
         if (e.getActionCommand().equals("Result")) {
-            current++;
             timer.stop();
             JOptionPane.showMessageDialog(this, "You have " + countCorrect + " correct answers");
             System.exit(0);
