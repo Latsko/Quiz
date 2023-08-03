@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Quiz extends JFrame implements ActionListener {
-        private static final String MAIN_COLOR = "#551fbd";
+    private static final String MAIN_COLOR = "#551fbd";
     private static final String DARKER_MAIN_COLOR = "#390879";
     private static final String SECONDARY_COLOR = "#a2eacb";
     private static final String DARKER_SECONDARY_COLOR = "#2cd9c1";
@@ -213,11 +213,11 @@ public class Quiz extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startButton) {
             greetingLabel.setVisible(false);
-            startButton.setVisible(false);
             questionLabel.setVisible(true);
-            btnNext.setVisible(true);
             progressBar.setVisible(true);
+            btnNext.setVisible(true);
             btnNext.setEnabled(true);
+            startButton.setVisible(false);
             btnResult.setEnabled(true);
             for (int i = 0; i < 4; i++) {
                 radioButtons[i].setEnabled(true);
