@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.List;
 
 public class Quiz extends JFrame implements ActionListener {
@@ -29,9 +30,9 @@ public class Quiz extends JFrame implements ActionListener {
     private int countCorrect, current, progressValue;
     private final List<Question> questionList;
 
-    Quiz(String s) {
+    Quiz(String s) throws IOException {
         super(s);
-        this.questionList = new QuestionService().setData();
+        this.questionList = new QuestionService().readQuestionFromFile();
         // here I set all necessary parameters to my frame
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
@@ -78,6 +79,7 @@ public class Quiz extends JFrame implements ActionListener {
             radioButtons[i] = new JRadioButton();
             radioButtons[i].setEnabled(false);
             radioButtons[i].setVisible(false);
+            radioButtons[i].setFont(new Font("Arial", Font.PLAIN, 10));
             testPanel.add(radioButtons[i]);
             buttonGroup.add(radioButtons[i]);
         }
@@ -105,10 +107,10 @@ public class Quiz extends JFrame implements ActionListener {
         setDataForButtons();
 
         //setting buttons bounds
-        radioButtons[0].setBounds(100, 200, 200, 50);
-        radioButtons[1].setBounds(100, 275, 200, 50);
-        radioButtons[2].setBounds(400, 200, 200, 50);
-        radioButtons[3].setBounds(400, 275, 200, 50);
+        radioButtons[0].setBounds(100, 200, 250, 50);
+        radioButtons[1].setBounds(100, 275, 250, 50);
+        radioButtons[2].setBounds(400, 200, 250, 50);
+        radioButtons[3].setBounds(400, 275, 250, 50);
         for (int i = 0; i < 4; i++) {
             radioButtons[i].setFocusable(false);
             radioButtons[i].setBackground(Color.decode(DARKER_SECONDARY_COLOR));
@@ -173,7 +175,9 @@ public class Quiz extends JFrame implements ActionListener {
         // question label
         questionLabel.setBounds(100, 20, 600, 150);
         questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        questionLabel.setVerticalAlignment(SwingConstants.CENTER);
         questionLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+        questionLabel.setVerticalTextPosition(SwingConstants.CENTER);
         questionLabel.setBackground(Color.DARK_GRAY);
         questionLabel.setForeground(Color.decode(SECONDARY_COLOR));
         questionLabel.setOpaque(true);
@@ -231,12 +235,12 @@ public class Quiz extends JFrame implements ActionListener {
                 countCorrect++;
             }
             current++;
-            progressValue = progressValue + (int) Math.ceil(100.0/6);
+            progressValue = progressValue + (int) Math.ceil(100.0/questionList.size());
             progressBar.setValue(progressValue);
             progressBar.setStringPainted(true);
-            progressBar.setString(current + "/" + 6);
+            progressBar.setString(current + "/" + questionList.size());
             setDataForButtons();
-            if (current == 6) {
+            if (current == questionList.size()) {
                 btnNext.setEnabled(false);
                 btnResult.setVisible(true);
                 for (int i = 0; i < 4; i++) {
