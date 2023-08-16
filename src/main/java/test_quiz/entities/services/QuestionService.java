@@ -5,18 +5,29 @@ import org.json.JSONTokener;
 import test_quiz.entities.Answer;
 import test_quiz.entities.Question;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
+import javax.net.ssl.HttpsURLConnection;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionService {
-    public List<Question> readQuestionFromFile() throws FileNotFoundException, MalformedURLException {
+    public List<Question> readQuestionFromFile() throws IOException {
         List<Question> questions = new ArrayList<>();
 
         URL url = new URL("https://api.jsonbin.io/v3/b/64db27789d312622a3916a70");
+        HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+
+        String line = "";
+        if(httpsURLConnection.getResponseCode() == 200) {
+            InputStream inputStream = httpsURLConnection.getInputStream();
+
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            line = bufferedReader.readLine();
+        }
+        String test = line.substring(10, line.indexOf("metadata")-2);
+        System.out.println(line);
+        System.out.println(test);
 
         JSONArray read = new JSONArray(new JSONTokener(new FileInputStream("questions.json")));
         for (int i = 0; i < read.length(); i++) {
