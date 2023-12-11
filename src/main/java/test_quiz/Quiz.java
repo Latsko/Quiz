@@ -22,7 +22,7 @@ public class Quiz extends JFrame implements ActionListener {
     private final JPanel progressPanel;
     private final JPanel testPanel;
     private final JPanel timerPanel;
-    private final JButton startButton, btnNext, btnResult;
+    private final JButton btnStart, btnNext, btnResult;
     private final JRadioButton[] radioButtons = new JRadioButton[5];
     private final ButtonGroup buttonGroup;
     private final Timer timer;
@@ -58,7 +58,7 @@ public class Quiz extends JFrame implements ActionListener {
         // initialize timer and show in timerLabel
         timer = new MyTimer().getTimer(timerLabel);
 
-        startButton = new JButton("Start Test");
+        btnStart = new JButton("Start Test");
         btnNext = new JButton("Next");
         btnResult = new JButton("Result");
         buttonGroup = new ButtonGroup();
@@ -68,11 +68,11 @@ public class Quiz extends JFrame implements ActionListener {
 
     private void setButtons() {
         // start button
-        startButton.setBounds(50, 200, 100, 30);
-        startButton.setForeground(Color.decode(MAIN_COLOR));
-        startButton.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
-        timerPanel.add(startButton);
-        startButton.addActionListener(this);
+        btnStart.setBounds(50, 200, 100, 30);
+        btnStart.setForeground(Color.decode(MAIN_COLOR));
+        btnStart.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
+        timerPanel.add(btnStart);
+        btnStart.addActionListener(this);
 
         // creating buttons, which will hold answers, and others, necessary to traverse my programme
         for (int i = 0; i < 5; i++) {
@@ -91,6 +91,7 @@ public class Quiz extends JFrame implements ActionListener {
         btnResult.setForeground(Color.decode(SECONDARY_COLOR));
         btnResult.setBackground(Color.decode(DARKER_MAIN_COLOR));
         btnResult.addActionListener(this);
+        testPanel.add(btnResult);
 
         btnNext.setVisible(false);
         btnNext.setEnabled(false);
@@ -98,9 +99,7 @@ public class Quiz extends JFrame implements ActionListener {
         btnNext.setForeground(Color.decode(SECONDARY_COLOR));
         btnNext.setBackground(Color.decode(DARKER_MAIN_COLOR));
         btnNext.addActionListener(this);
-
         testPanel.add(btnNext);
-        testPanel.add(btnResult);
 
         //sets data for radial buttons
         radioButtons[4].setVisible(false);
@@ -215,13 +214,13 @@ public class Quiz extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == startButton) {
+        if (e.getSource() == btnStart) {
             greetingLabel.setVisible(false);
             questionLabel.setVisible(true);
             progressBar.setVisible(true);
             btnNext.setVisible(true);
             btnNext.setEnabled(true);
-            startButton.setVisible(false);
+            btnStart.setVisible(false);
             btnResult.setEnabled(true);
             for (int i = 0; i < 4; i++) {
                 radioButtons[i].setEnabled(true);
