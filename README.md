@@ -2,8 +2,9 @@
 
 ## Overview
 ### This repository contains simple Quiz Application using Java and Swing for lightweight GUI. 
-This application contains four options choice selection and a timer to note down a time of quiz
-completion. Questions are stored on a host site in the form of JSON list.
+This application contains four options choice selection and a timer to note
+down a time of quiz completion. Questions are stored on a host site in 
+the form of JSON list.
 
 ## Made with
 <div >
