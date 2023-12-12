@@ -2,7 +2,7 @@ package test_quiz;
 
 import test_quiz.entities.MyTimer;
 import test_quiz.entities.Question;
-import test_quiz.entities.services.QuestionService;
+import test_quiz.services.QuestionService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,7 +33,7 @@ public class Quiz extends JFrame implements ActionListener {
     Quiz(String s) throws IOException {
         super(s);
         this.questionList = new QuestionService().readQuestionFromFile();
-        // here I set all necessary parameters to my frame
+
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setLayout(null);
         setLocation(250, 100);
@@ -55,7 +55,6 @@ public class Quiz extends JFrame implements ActionListener {
         setLabels();
         setProgressBar();
 
-        // initialize timer and show in timerLabel
         timer = new MyTimer().getTimer(timerLabel);
 
         btnStart = new JButton("Start Test");
@@ -67,14 +66,12 @@ public class Quiz extends JFrame implements ActionListener {
     }
 
     private void setButtons() {
-        // start button
         btnStart.setBounds(50, 200, 100, 30);
         btnStart.setForeground(Color.decode(MAIN_COLOR));
         btnStart.setBackground(Color.decode(DARKER_SECONDARY_COLOR));
         timerPanel.add(btnStart);
         btnStart.addActionListener(this);
 
-        // creating buttons, which will hold answers, and others, necessary to traverse my programme
         for (int i = 0; i < 5; i++) {
             radioButtons[i] = new JRadioButton();
             radioButtons[i].setEnabled(false);
@@ -84,7 +81,6 @@ public class Quiz extends JFrame implements ActionListener {
             buttonGroup.add(radioButtons[i]);
         }
 
-        // hide result button and add action listener to next and result buttons
         btnResult.setVisible(false);
         btnResult.setEnabled(false);
         btnResult.setFocusable(false);
@@ -101,11 +97,9 @@ public class Quiz extends JFrame implements ActionListener {
         btnNext.addActionListener(this);
         testPanel.add(btnNext);
 
-        //sets data for radial buttons
         radioButtons[4].setVisible(false);
         setDataForButtons();
 
-        //setting buttons bounds
         radioButtons[0].setBounds(100, 200, 250, 50);
         radioButtons[1].setBounds(100, 275, 250, 50);
         radioButtons[2].setBounds(400, 200, 250, 50);
@@ -147,7 +141,6 @@ public class Quiz extends JFrame implements ActionListener {
     }
 
     private void setProgressBar() {
-        // progress bar
         progressPanel.setLayout(null);
         progressPanel.setBounds(0, 500, 1000, 50);
         progressPanel.setOpaque(true);
@@ -164,14 +157,12 @@ public class Quiz extends JFrame implements ActionListener {
     }
 
     private void setLabels() {
-        // greeting label
         greetingLabel.setBounds(100, 150, 600, 150);
         greetingLabel.setHorizontalAlignment(SwingConstants.CENTER);
         greetingLabel.setForeground(Color.decode(SECONDARY_COLOR));
         greetingLabel.setFont(new Font("Arial", Font.ITALIC, 30));
         greetingLabel.setVisible(true);
 
-        // question label
         questionLabel.setBounds(100, 20, 600, 150);
         questionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         questionLabel.setVerticalAlignment(SwingConstants.CENTER);
@@ -183,7 +174,6 @@ public class Quiz extends JFrame implements ActionListener {
         questionLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         questionLabel.setVisible(false);
 
-        // timer label
         timerLabel.setBounds(50, 75, 100, 100);
         timerLabel.setOpaque(true);
         timerLabel.setForeground(Color.decode(MAIN_COLOR));
@@ -196,22 +186,24 @@ public class Quiz extends JFrame implements ActionListener {
         add(timerPanel);
         add(testPanel);
 
-        // test panel
         testPanel.setBackground(Color.decode(MAIN_COLOR));
         testPanel.setBounds(0, 0, 800, 500);
         testPanel.add(questionLabel);
         testPanel.setLayout(null);
 
-        //timer panel
         timerPanel.setBackground(Color.decode(DARKER_MAIN_COLOR));
         timerPanel.setBounds(800, 0, 200, 500);
         timerPanel.add(timerLabel);
         timerPanel.setLayout(null);
 
-        //greeting panel
         testPanel.add(greetingLabel);
     }
 
+    /**
+     * This method overrides how frame should behave when we click the buttons.
+     * It also changes button property depending on the situation and asserts
+     * logic for each event.
+     **/
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnStart) {

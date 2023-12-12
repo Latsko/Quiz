@@ -1,4 +1,4 @@
-package test_quiz.entities.services;
+package test_quiz.services;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,6 +13,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionService {
+    /**
+     * This method enables JSON data to be read from host site.
+     * After establishing url connection, data is assigned to JSONObject
+     * by passing input stream to JSONTokener, which breaks string
+     * into tokens. This lets us assign data to JSONArray for further use.
+     * Then the loop extracts fields and creates List with object type Question.
+     * @return List of Question
+     * @throws IOException
+     **/
     public List<Question> readQuestionFromFile() throws IOException {
         List<Question> questions = new ArrayList<>();
 
